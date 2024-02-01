@@ -2256,21 +2256,23 @@ class VisPluginTableModel {
   /**
    * Applies conditional formatting (red if negative) to all measure columns set to use it
    */
-  applyFormatting() {
+applyFormatting() {
     this.columns.forEach(column => {
-      var config_setting = this.config['style|' + column.modelField.name];
+      var config_setting = this.config['style|' + column.modelField.name]
       if (typeof config_setting !== 'undefined') {
         switch (config_setting) {
-          case 'black_red':
+          case 'black_red_green':
             this.data.forEach(row => {
               if (row.data[column.id].value < 0) {
-                row.data[column.id].cell_style.push('negative');
+                row.data[column.id].cell_style.push('negative')
+              } else if (row.data[column.id].value > 0.1) {  // Added condition
+                row.data[column.id].cell_style.push('green')
               }
-            });
-            break;
+            })
+            break
         }
       }
-    });
+    })
   }
 
   transposeDimensionsIntoHeaders() {
